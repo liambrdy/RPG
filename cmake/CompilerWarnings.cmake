@@ -1,4 +1,4 @@
-function(set_project_warnings project_name)
+function (set_project_warnings project_name)
     option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 
     set(CLANG_WARNINGS
@@ -7,8 +7,7 @@ function(set_project_warnings project_name)
         -Wshadow # warn the user if a variable declaration shadows one from a
         # parent context
         -Wnon-virtual-dtor # warn the user if a class with virtual functions has a
-        # non-virtual destructor. This helps catch hard to
-        # track down memory errors
+        # non-virtual destructor. This helps catch hard to track down memory errors
         -Wold-style-cast # warn for c-style casts
         -Wcast-align # warn for potential performance problem casts
         -Wunused # warn on anything being unused
@@ -24,7 +23,7 @@ function(set_project_warnings project_name)
     )
 
     if (${WARNINGS_AS_ERRORS})
-        set (CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
+        set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
     endif ()
 
     set(GCC_WARNINGS
@@ -42,9 +41,9 @@ function(set_project_warnings project_name)
         set(PROJECT_WARNINGS ${CLANG_WARNINGS})
     elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
         set(PROJECT_WARNINGS ${GCC_WARNINGS})
-    else()
+    else ()
         message(AUTHOR_WARNING "No compiler warnings set for '${CMAKE_CXX_COMPILER_ID}' compiler.")
     endif ()
 
     target_compile_options(${project_name} INTERFACE ${PROJECT_WARNINGS})
-endfunction()
+endfunction ()

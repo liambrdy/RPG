@@ -4,7 +4,7 @@ project(RPG CXX)
 include(cmake/StandardProjectSettings.cmake)
 
 add_library(project_options INTERFACE)
-target_compile_features(project_options INTERFACE cxx_std_17)
+target_compile_features(project_options INTERFACE cxx_std_20)
 
 add_library(project_warnings INTERFACE)
 
@@ -22,13 +22,7 @@ option(ENABLE_TESTING "Enable Test Builds" ON)
 
 option(ENABLE_PCH "Enable Precompiled headers" OFF)
 if (${ENABLE_PCH})
-    target_precompile_headers(
-            project_options
-            INTERFACE
-            <vector>
-            <string>
-            <utility>
-            <map>)
+    target_precompile_headers(project_options INTERFACE <vector> <string> <utility> <map>)
 endif ()
 
 set(CONAN_EXTRA_REQUIRES "imgui-sfml/2.1@bincrafters/stable")
