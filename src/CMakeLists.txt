@@ -1,6 +1,9 @@
-add_executable(RPG main.cpp Scene.h Game.cpp Game.h Window.cpp Window.h Events.h Events.cpp Config.h Config.cpp)
+set(SOURCES Game.cpp Window.cpp Events.cpp Config.cpp)
+set(HEADERS Scene.h Game.h Window.h Events.h Config.h)
 
-target_link_libraries(
-    RPG PRIVATE project_options project_warnings CONAN_PKG::fmt CONAN_PKG::spdlog CONAN_PKG::sfml
-                CONAN_PKG::imgui-sfml
-)
+add_library(RPG_common OBJECT ${SOURCES} ${HEADERS})
+target_include_directories(RPG_common INTERFACE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(RPG_common project_options project_warnings CONAN_PKG::spdlog CONAN_PKG::sfml)
+
+add_executable(RPG main.cpp)
+target_link_libraries(RPG RPG_common)

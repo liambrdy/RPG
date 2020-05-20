@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "../src/Config.cpp"
+#include "Config.h"
 
 TEST_CASE("Config File", "[config]")
 {
