@@ -11,6 +11,7 @@ jobs:
       env:
         - GCC_VER="9"
         - MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
+        - CODECOV_TOKEN="ff4d07b8-88ad-4c56-acf3-4fcc9a400de3"
 
       addons:
         apt:
