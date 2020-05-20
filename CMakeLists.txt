@@ -26,7 +26,7 @@ if (${ENABLE_PCH})
 endif ()
 
 set(CONAN_EXTRA_REQUIRES imgui-sfml/2.1@bincrafters/stable)
-set(CONAN_EXTRA_OPTIONS sfml:audio=False sfml:network=False)
+set(CONAN_EXTRA_OPTIONS sfml:audio=False sfm2l:network=False)
 
 include(cmake/Conan.cmake)
 run_conan()

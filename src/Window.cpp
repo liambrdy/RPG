@@ -6,13 +6,13 @@
 
 #include <SFML/System/InputStream.hpp>
 
-constexpr unsigned FPS = 60;
+#include "Config.h"
 
 Window::Window(unsigned width, unsigned height, const char* title)
     : m_window(sf::VideoMode(width, height), title), m_width(width), m_height(height)
 {
-    m_window.setVerticalSyncEnabled(true);
-    m_window.setFramerateLimit(FPS);
+    m_window.setVerticalSyncEnabled(Config::GetVSyncEnabled());
+    m_window.setFramerateLimit(Config::GetMaxFPS());
 }
 
 void Window::SwapBuffers()

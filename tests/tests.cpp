@@ -1,7 +1,13 @@
 #include <catch2/catch.hpp>
 
-TEST_CASE("Number Test", "[numbers]")
+#include "../src/Config.cpp"
+
+TEST_CASE("Config File", "[config]")
 {
-    REQUIRE(1 != 2);
-    REQUIRE(2 * 2 == 4);
+    auto data = Config::LoadConfigFile("config");
+
+    REQUIRE(data.windowDimensions.first > 0);
+    REQUIRE(data.windowDimensions.second > 0);
+
+    REQUIRE(data.FPS > 0);
 }
