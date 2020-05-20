@@ -25,8 +25,8 @@ if (${ENABLE_PCH})
     target_precompile_headers(project_options INTERFACE <vector> <string> <utility> <map>)
 endif ()
 
-set(CONAN_EXTRA_REQUIRES "imgui-sfml/2.1@bincrafters/stable")
-set(CONAN_EXTRA_OPTIONS "")
+set(CONAN_EXTRA_REQUIRES imgui-sfml/2.1@bincrafters/stable)
+set(CONAN_EXTRA_OPTIONS sfml:audio=False sfml:network=False)
 
 include(cmake/Conan.cmake)
 run_conan()
