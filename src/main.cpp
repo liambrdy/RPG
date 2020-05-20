@@ -1,61 +1,50 @@
 #include <spdlog/spdlog.h>
 
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
-#include <SFML/Window/Event.hpp>
 
-#include <imgui-SFML.h>
-#include <imgui.h>
+#include "Game.h"
+#include "Scene.h"
 
-constexpr unsigned W = 800, H = 600;
-constexpr unsigned FRAME_RATE = 60;
+#include "Window.h"
+
+#include "Config.h"
 
 int main()
 {
-    spdlog::info("Hello {0}", "World");
+    spdlog::set_level(spdlog::level::trace);
 
-    sf::RenderWindow window(sf::VideoMode(W, H), "RPG");
-    window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(FRAME_RATE);
+    Config::Init();
 
-    ImGui::SFML::Init(window);
+    auto [w, h] = Config::GetWindowDimensions();
+    Window window(w, h, "RPG");
 
-    sf::Clock deltaTime;
+    Scene* scene = new Game();
 
-    sf::CircleShape circle(100.0f);
-    circle.setFillColor(sf::Color::Green);
+    sf::Clock delta;
 
-    while (window.isOpen())
+    for (;;)
     {
-        sf::Event event{};
-        while (window.pollEvent(event))
-        {
-            ImGui::SFML::ProcessEvent(event);
+        window.SwapBuffers();
 
-            if (event.type == sf::Event::Closed)
+        RawEvent event;
+        if (window.HasEventReady(event))
+        {
+            GameEvent gameEvent;
+            if (Config::ParseEvent(event, gameEvent))
             {
-                window.close();
+                scene = scene->OnEvent(gameEvent);
+
+                if (scene == nullptr)
+                {
+                    return 0;
+                }
             }
         }
 
-        const auto timeElapsed = deltaTime.restart();
-        ImGui::SFML::Update(window, timeElapsed);
-
-        ImGui::Begin("Debug");
-        ImGui::Text("Frame time: %f", static_cast<double>(timeElapsed.asSeconds()));
-        ImGui::End();
-
-        window.clear();
-
-        window.draw(circle);
-
-        ImGui::SFML::Render(window);
-
-        window.display();
+        scene = scene->OnUpdate(delta.restart().asSeconds());
+        if (scene == nullptr)
+        {
+            return 0;
+        }
     }
-
-    ImGui::SFML::Shutdown();
-
-    return 0;
 }
