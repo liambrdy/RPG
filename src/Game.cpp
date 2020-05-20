@@ -4,8 +4,6 @@
 
 #include "Game.h"
 
-#include <spdlog/spdlog.h>
-
 Game::Game() {}
 
 Game::~Game() {}
