@@ -79,7 +79,7 @@ TEST_CASE("Scenes", "[tests]")
 
 TEST_CASE("ResourceManager", "[tests]")
 {
-    SECTION("Loading textures")
+
     {
         auto texture = ResourceManager::LoadTexture("checkerboard", "assets/textures/checkerboard.png");
         REQUIRE(texture.getSize().x > 0);
@@ -109,5 +109,5 @@ TEST_CASE("ResourceManager", "[tests]")
 
         auto font = ResourceManager::GetFont("hack");
         REQUIRE(font.getInfo().family.empty());
-    }
+    } SECTION("Loading textures")
 }
