@@ -5,7 +5,7 @@
 #ifndef RPG_SCENE_H
 #define RPG_SCENE_H
 
-#include "Events.h"
+#include "../core/Events.h"
 
 class Scene
 {

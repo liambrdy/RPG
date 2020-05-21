@@ -9,7 +9,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "Events.h"
+#include "../core/Events.h"
 
 class Window
 {

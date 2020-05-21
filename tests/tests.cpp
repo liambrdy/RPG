@@ -1,8 +1,10 @@
 #include <catch2/catch.hpp>
 
-#include "Config.h"
-#include "Events.h"
-#include "Game.h"
+#include "core/Config.h"
+#include "core/Events.h"
+#include "scenes/Game.h"
+
+#include "ecs/ECS.h"
 
 TEST_CASE("Config File", "[test]")
 {
@@ -74,4 +76,47 @@ TEST_CASE("Scenes", "[tests]")
     event = GameEvent::MustQuit;
     scene = scene->OnEvent(event);
     REQUIRE(scene == nullptr);
+}
+
+TEST_CASE("ECS", "[tests]")
+{
+    ECS::Init();
+
+    struct TestComponent
+    {
+        float a, b, c;
+    };
+    ECS::RegisterComponent<TestComponent>();
+
+    class TestSystem : public System
+    {
+    public:
+        void Update()
+        {
+            for (const auto& entity : m_entities)
+            {
+                auto& test = ECS::GetComponent<TestComponent>(entity);
+
+                test.a -= 2;
+                test.b += 3;
+                test.c += 5;
+            }
+        }
+    };
+
+    auto system = ECS::RegisterSystem<TestSystem>();
+
+    Signature signature{};
+    signature.set(ECS::GetComponentType<TestComponent>(), true);
+    ECS::SetSystemSignature<TestSystem>(signature);
+
+    Entity entity = ECS::CreateEntity();
+    ECS::AddComponent<TestComponent>(entity, { 12, 11, -2 });
+
+    system->Update();
+
+    auto component = ECS::GetComponent<TestComponent>(entity);
+    REQUIRE(component.a == 10);
+    REQUIRE(component.b == 14);
+    REQUIRE(component.c == 3);
 }

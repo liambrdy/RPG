@@ -6,7 +6,7 @@
 
 #include <SFML/System/InputStream.hpp>
 
-#include "Config.h"
+#include "../core/Config.h"
 
 Window::Window(unsigned width, unsigned height, const char* title)
     : m_window(sf::VideoMode(width, height), title), m_width(width), m_height(height)

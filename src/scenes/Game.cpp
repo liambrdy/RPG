@@ -4,6 +4,8 @@
 
 #include "Game.h"
 
+#include "ecs/ECS.h"
+
 Game::Game() {}
 
 Game::~Game() {}

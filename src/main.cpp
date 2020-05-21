@@ -2,12 +2,12 @@
 
 #include <SFML/System/Clock.hpp>
 
-#include "Game.h"
-#include "Scene.h"
+#include "scenes/Game.h"
+#include "scenes/Scene.h"
 
-#include "Window.h"
+#include "renderer/Window.h"
 
-#include "Config.h"
+#include "core/Config.h"
 
 int main()
 {
