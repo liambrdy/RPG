@@ -3,6 +3,7 @@
 #include "Config.h"
 #include "Events.h"
 #include "Game.h"
+#include "ResourceManager.h"
 
 TEST_CASE("Config File", "[test]")
 {
@@ -74,4 +75,45 @@ TEST_CASE("Scenes", "[tests]")
     event = GameEvent::MustQuit;
     scene = scene->OnEvent(event);
     REQUIRE(scene == nullptr);
+}
+
+TEST_CASE("ResourceManager", "[tests]")
+{
+    SECTION("Loading textures")
+    {
+        auto texture = ResourceManager::LoadTexture("checkerboard", "assets/textures/checkerboard.png");
+        REQUIRE(texture.getSize().x > 0);
+        REQUIRE(texture.getSize().y > 0);
+    }
+
+    SECTION("Getting already loaded textures")
+    {
+        auto texture = ResourceManager::GetTexture("checkerboard");
+        REQUIRE(texture.getSize().x > 0);
+        REQUIRE(texture.getSize().y > 0);
+    }
+
+    SECTION("Loading fonts")
+    {
+        auto font = ResourceManager::LoadFont("hack", "assets/fonts/hack.ttf");
+        REQUIRE(!font.getInfo().family.empty());
+    }
+
+    SECTION("Getting already loaded fonts")
+    {
+        auto font = ResourceManager::GetFont("hack");
+        REQUIRE(!font.getInfo().family.empty());
+    }
+
+    SECTION("Shutdown resource manager")
+    {
+        ResourceManager::Shutdown();
+
+        auto texture = ResourceManager::GetTexture("checkerboard");
+        REQUIRE(texture.getSize().x == 0);
+        REQUIRE(texture.getSize().y == 0);
+
+        auto font = ResourceManager::GetFont("hack");
+        REQUIRE(font.getInfo().family.empty());
+    }
 }

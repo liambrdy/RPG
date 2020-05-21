@@ -1,3 +1,4 @@
+# Window Config
 windowWidth = 800
 windowHeight = 600
 vsync = 1
