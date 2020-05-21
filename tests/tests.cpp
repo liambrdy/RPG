@@ -86,6 +86,11 @@ TEST_CASE("ECS", "[tests]")
     {
         float a, b, c;
     };
+    struct AnotherComponent
+    {
+        float mul;
+    };
+    ECS::RegisterComponent<AnotherComponent>();
     ECS::RegisterComponent<TestComponent>();
 
     class TestSystem : public System
@@ -96,10 +101,11 @@ TEST_CASE("ECS", "[tests]")
             for (const auto& entity : m_entities)
             {
                 auto& test = ECS::GetComponent<TestComponent>(entity);
+                auto& another = ECS::GetComponent<AnotherComponent>(entity);
 
-                test.a -= 2;
-                test.b += 3;
-                test.c += 5;
+                test.a *= another.mul;
+                test.b *= another.mul;
+                test.c *= another.mul;
             }
         }
     };
@@ -108,15 +114,28 @@ TEST_CASE("ECS", "[tests]")
 
     Signature signature{};
     signature.set(ECS::GetComponentType<TestComponent>(), true);
+    signature.set(ECS::GetComponentType<AnotherComponent>(), true);
     ECS::SetSystemSignature<TestSystem>(signature);
 
     Entity entity = ECS::CreateEntity();
     ECS::AddComponent<TestComponent>(entity, { 12, 11, -2 });
 
+    Entity anotherEntity = ECS::CreateEntity();
+    ECS::AddComponent<TestComponent>(anotherEntity, { 0, 1, 2 });
+    ECS::AddComponent<AnotherComponent>(anotherEntity, { 2 });
+
     system->Update();
 
     auto component = ECS::GetComponent<TestComponent>(entity);
-    REQUIRE(component.a == 10);
-    REQUIRE(component.b == 14);
-    REQUIRE(component.c == 3);
+    REQUIRE(component.a == 12);
+    REQUIRE(component.b == 11);
+    REQUIRE(component.c == -2);
+
+    auto anotherComponent = ECS::GetComponent<TestComponent>(anotherEntity);
+    REQUIRE(anotherComponent.a == 0);
+    REQUIRE(anotherComponent.b == 2);
+    REQUIRE(anotherComponent.c == 4);
+
+    ECS::DestroyEntity(entity);
+    ECS::DestroyEntity(anotherEntity);
 }
