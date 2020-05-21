@@ -84,11 +84,8 @@ TEST_CASE("ResourceManager", "[tests]")
         auto texture = ResourceManager::LoadTexture("checkerboard", "assets/textures/checkerboard.png");
         REQUIRE(texture.getSize().x > 0);
         REQUIRE(texture.getSize().y > 0);
-    }
 
-    SECTION("Getting already loaded textures")
-    {
-        auto texture = ResourceManager::GetTexture("checkerboard");
+        texture = ResourceManager::GetTexture("checkerboard");
         REQUIRE(texture.getSize().x > 0);
         REQUIRE(texture.getSize().y > 0);
     }
@@ -97,11 +94,8 @@ TEST_CASE("ResourceManager", "[tests]")
     {
         auto font = ResourceManager::LoadFont("hack", "assets/fonts/hack.ttf");
         REQUIRE(!font.getInfo().family.empty());
-    }
 
-    SECTION("Getting already loaded fonts")
-    {
-        auto font = ResourceManager::GetFont("hack");
+        font = ResourceManager::GetFont("hack");
         REQUIRE(!font.getInfo().family.empty());
     }
 
