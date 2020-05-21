@@ -26,6 +26,23 @@ TEST_CASE("Config File", "[test]")
 
         REQUIRE(Config::GetMaxFPS() > 0);
     }
+
+    SECTION("Parsing raw events to game events")
+    {
+        RawEvent event = RawEvent::A;
+        GameEvent gameEvent;
+
+        Config::ParseEvent(event, gameEvent);
+        REQUIRE(gameEvent == GameEvent::Left);
+
+        event = RawEvent::WindowClose;
+        Config::ParseEvent(event, gameEvent);
+        REQUIRE(gameEvent == GameEvent::MustQuit);
+
+        event = RawEvent::Space;
+        Config::ParseEvent(event, gameEvent);
+        REQUIRE(gameEvent == GameEvent::JumpSelect);
+    }
 }
 
 TEST_CASE("Events", "[test]")
@@ -43,23 +60,6 @@ TEST_CASE("Events", "[test]")
 
         event.key.code = sf::Keyboard::Home;
         REQUIRE(SFMLEventToRawEvent(event) == RawEvent::NoEvent);
-    }
-
-    SECTION("Raw events to game events")
-    {
-        RawEvent event = RawEvent::A;
-        GameEvent gameEvent;
-
-        Config::ParseEvent(event, gameEvent);
-        REQUIRE(gameEvent == GameEvent::Left);
-
-        event = RawEvent::WindowClose;
-        Config::ParseEvent(event, gameEvent);
-        REQUIRE(gameEvent == GameEvent::MustQuit);
-
-        event = RawEvent::Space;
-        Config::ParseEvent(event, gameEvent);
-        REQUIRE(gameEvent == GameEvent::JumpSelect);
     }
 }
 
