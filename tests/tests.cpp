@@ -3,7 +3,6 @@
 #include "Config.h"
 #include "Events.h"
 #include "Game.h"
-#include "ResourceManager.h"
 
 TEST_CASE("Config File", "[test]")
 {
@@ -75,39 +74,4 @@ TEST_CASE("Scenes", "[tests]")
     event = GameEvent::MustQuit;
     scene = scene->OnEvent(event);
     REQUIRE(scene == nullptr);
-}
-
-TEST_CASE("ResourceManager", "[tests]")
-{
-
-    {
-        auto texture = ResourceManager::LoadTexture("checkerboard", "assets/textures/checkerboard.png");
-        REQUIRE(texture.getSize().x > 0);
-        REQUIRE(texture.getSize().y > 0);
-
-        texture = ResourceManager::GetTexture("checkerboard");
-        REQUIRE(texture.getSize().x > 0);
-        REQUIRE(texture.getSize().y > 0);
-    }
-
-    SECTION("Loading fonts")
-    {
-        auto font = ResourceManager::LoadFont("hack", "assets/fonts/hack.ttf");
-        REQUIRE(!font.getInfo().family.empty());
-
-        font = ResourceManager::GetFont("hack");
-        REQUIRE(!font.getInfo().family.empty());
-    }
-
-    SECTION("Shutdown resource manager")
-    {
-        ResourceManager::Shutdown();
-
-        auto texture = ResourceManager::GetTexture("checkerboard");
-        REQUIRE(texture.getSize().x == 0);
-        REQUIRE(texture.getSize().y == 0);
-
-        auto font = ResourceManager::GetFont("hack");
-        REQUIRE(font.getInfo().family.empty());
-    } SECTION("Loading textures")
 }
