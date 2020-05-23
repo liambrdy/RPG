@@ -1,6 +1,6 @@
 set(SOURCES scenes/Game.cpp renderer/Window.cpp core/Events.cpp core/Config.cpp
-            renderer/ResourceManager.cpp
-        ecs/ECS.cpp)
+            renderer/ResourceManager.cpp ecs/ECS.cpp
+)
 set(HEADERS
     scenes/Scene.h
     scenes/Game.h

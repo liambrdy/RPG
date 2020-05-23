@@ -5,8 +5,8 @@
 #ifndef RPG_ECS_H
 #define RPG_ECS_H
 
-#include "EntityManager.h"
 #include "ComponentManager.h"
+#include "EntityManager.h"
 #include "SystemManager.h"
 
 #include <memory>
@@ -21,10 +21,7 @@ public:
         m_systemManager = std::make_unique<SystemManager>();
     }
 
-    static Entity CreateEntity()
-    {
-        return m_entityManager->CreateEntity();
-    }
+    static Entity CreateEntity() { return m_entityManager->CreateEntity(); }
 
     static void DestroyEntity(Entity entity)
     {
@@ -39,9 +36,10 @@ public:
         m_componentManager->RegisterComponent<T>();
     }
 
-    template <typename T>
-    static void AddComponent(Entity entity, T component)
+    template <typename T, typename... P>
+    static void AddComponent(Entity entity, P&&... args)
     {
+        T component{ args... };
         m_componentManager->AddComponent(entity, component);
 
         auto signature = m_entityManager->GetSignature(entity);

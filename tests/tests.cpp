@@ -118,11 +118,11 @@ TEST_CASE("ECS", "[tests]")
     ECS::SetSystemSignature<TestSystem>(signature);
 
     Entity entity = ECS::CreateEntity();
-    ECS::AddComponent<TestComponent>(entity, { 12, 11, -2 });
+    ECS::AddComponent<TestComponent>(entity, 12.0f, 11.0f, -2.0f);
 
     Entity anotherEntity = ECS::CreateEntity();
-    ECS::AddComponent<TestComponent>(anotherEntity, { 0, 1, 2 });
-    ECS::AddComponent<AnotherComponent>(anotherEntity, { 2 });
+    ECS::AddComponent<TestComponent>(anotherEntity, 0.0f, 1.0f, 2.0f);
+    ECS::AddComponent<AnotherComponent>(anotherEntity, 2.0f);
 
     system->Update();
 
